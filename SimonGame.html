@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simon Game</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+  <style type="text/css">
+  	body {
+	background-color: black;
+	text-align: center;
+	padding-top: 3em;
+}
+#center {
+	border-radius: 50%;
+	border: 20px solid #545453;
+	width: 15em;
+	height: 15em;
+	background: #FFF;
+	position: relative;
+	margin: 0 auto;
+	margin-top: -22em;
+	padding-top: 2em;
+}
+.labels {
+	margin: 0 0 0 2em;
+	word-spacing: 5px;
+}
+.count {
+	position: relative;
+	margin-left: -5.45em;
+	letter-spacing: -1.5px;
+}
+.count {
+	width: 40px;
+	height: 30px;
+	background: #000;
+	position: relative;
+	margin-left: 2.15em;
+	border: 2px solid #929291;
+}
+.countDisp {
+	font-family: 'Josefin Sans', sans-serif;
+	color: #FF0404;
+	font-size: 30px;
+	text-align: center;
+	position: relative;
+	margin: -0.35em 0 0 .1em;
+	letter-spacing: 3px;
+}
+.start {
+	position: relative;
+	margin: -3.05em 0 0 1.2em;
+}
+#start {
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	background: #FF1111;
+	box-shadow: 1px 1px 7px #000;
+	position: relative;
+	margin: 1.5em 0 0 4.55em;
+	cursor: pointer;
+}
+#reset {
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	background: #F4FF11;
+	box-shadow: 1px 1px 7px #000;
+	position: relative;
+	margin: -2.75em 0 0 8em;
+	cursor: pointer;
+}
+.reset {
+	margin: 0 0 0 0.5em;
+}
+#onoff {
+	font-size: 10px;
+	font-weight: bold;
+}
+.switch {
+  	position: relative;
+  	display: inline-block;
+  	width: 35px;
+  	height: 17px;
+	margin: 1em 0 -0.75em 0;
+}
+.switch input {display:none;}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 10px;
+  width: 10px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #118FFF;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: #000;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+button {
+	width: 15em;
+	height: 15em;
+	margin: -3px -3px 0 -2px;
+}
+#red {
+	background-color: red;
+	border-top-left-radius: 300px;
+	border-top: 20px solid #545453;
+	border-left: 20px solid #545453;
+	border-bottom: 10px solid #545453;
+	border-right: 10px solid #545453;
+	cursor: pointer;
+}
+.RED {
+	outline: none;
+	box-shadow: inset 0 0 100px #FFB0B0;
+}
+#red:focus, #red:active {
+	outline: none;
+}
+#blue {
+	background-color: blue;
+	border-bottom-left-radius: 300px;
+	border-bottom: 20px solid #545453;
+	border-left: 20px solid #545453;
+	border-top: 10px solid #545453;
+	border-right: 10px solid #545453;
+	cursor: pointer;
+}
+.BLUE {
+	outline: none;
+	box-shadow: inset 0 0 50px #A9DAFF;
+}
+#blue:focus, #blue:active {
+	outline: none;
+}
+#green {
+	background-color: green;
+	border-top-right-radius: 300px;
+	border-top: 20px solid #545453;
+	border-right: 20px solid #545453;
+	border-bottom: 10px solid #545453;
+	border-left: 10px solid #545453;
+	cursor: pointer;
+}
+.GREEN {
+	outline: none;
+	box-shadow: inset 0 0 150px #CCFFCC;
+}
+#green:focus, #green:active {
+	outline: none;
+}
+#yellow {
+	background-color: yellow;
+	border-bottom-right-radius: 300px;
+	border-bottom: 20px solid #545453;
+	border-right: 20px solid #545453;
+	border-top: 10px solid #545453;
+	border-left: 10px solid #545453;
+	cursor: pointer;
+}
+.YELLOW {
+	outline: none;
+	box-shadow: inset 0 0 150px #FFF;
+}
+#yellow:focus, #yellow:active {
+	outline: none;
+}
+#footer {
+  font-family: 'Josefin Sans', sans-serif;
+  position: relative;
+  font-size: 16px;
+  font-weight: normal;
+  margin-top: 280px;
+  width: 100%;
+  height: 140px;
+}
+
+  </style>
+</head>
+<body>
+<audio id="REDSound" src="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"></audio>
+<audio id="BLUESound" src="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"></audio>
+<audio id="GREENSound" src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"></audio>
+<audio id="YELLOWSound" src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"></audio>
+
+
+<div class="container">
+	<button id="red"></button>
+	<button id="green"></button><br/>
+	<button id="blue"></button>
+	<button id="yellow"></button>
+</div>
+
+
+<div id="center">
+	<div class="row labels">
+		count
+		start
+		reset
+	</div>
+	<div class="count">
+		<div class="countDisp">0</div>
+	</div>
+	<div class="start">
+		<div id="start"></div><br/>
+	</div>
+	<div class="reset">
+		<div id="reset"></div>
+	</div>
+	<div class="onoff">
+		<label class="switch">
+  			<input type="checkbox">
+  			<span class="slider"></span>
+		</label><br/>
+		<a id="onoff">OFF&nbsp&nbsp&nbspON</a>
+	</div>
+</div>
+
+<footer id="footer" class="text-center">
+  <div class="container">
+    Designed & Coded by
+    <a> Ozge</a>
+  </div>
+</footer>
+
+
+<script type="text/javascript">
+	//Thanks to CodeWithNick on his YouTube channel. His javascript work helped formulate some of my javascript codes here.
+
+$(document).ready(function () {
+	const RED = "RED";
+	const BLUE = "BLUE";
+	const GREEN = "GREEN";
+	const YELLOW = "YELLOW"
+	const COLORS = [RED, BLUE, GREEN, YELLOW];
+	var sequence = [];
+	var step = 0;
+	var turn = 0;
+	var strict = 0;
+	var chance = 0;
+	$(".countDisp").hide();
+	
+	function fillSequence() {
+		var next = COLORS[Math.floor(Math.random() * COLORS.length)];
+		sequence.push(next);
+	}
+	
+	function reaction(color) {
+		var buzzer = $("#" + color + "Sound")[0];
+		buzzer.play();
+		$("#" + color.toLowerCase()).addClass(color);
+		setTimeout(function() {
+			$("#" + color.toLowerCase()).removeClass(color);
+		}, 200);
+	}
+	
+	function playSequence() {
+		for(var i = 0; i < sequence.length; i++){
+		    (function(i){
+			   setTimeout(function(){
+				  reaction(sequence[i]);
+			   }, 800 * i);
+		    }(i));
+		} 
+	}
+	
+	function sendColor(color) {
+		reaction(color);
+		if (color === sequence[step]) {
+			if (step >= 19 && sequence.length >= 19) {
+				alert("YOU WON!");
+				step = 0;
+				SEQUENCE = [];
+				turn = 0;
+				(".countDisp").html(turn);
+			} else if (step === sequence.length - 1) {
+				step = 0;
+				fillSequence();
+				turn++;
+				$(".countDisp").html(turn);
+				setTimeout(function() {playSequence()}, 1000);
+			} else {
+				step++;
+			}
+
+		} else {
+			if (strict === 1) {
+				alert("YOU LOST!");
+				step = 0;
+				SEQUENCE = [];
+				turn = 0;
+				strict = 0;
+				$(".countDisp").html(turn);
+			} else if (chance === 0) {
+				playSequence();
+				chance = 1;
+			} else if (chance === 1) {
+				alert("YOU LOST!");
+				step = 0;
+				SEQUENCE = [];
+				turn = 0;
+				$(".countDisp").html(turn);
+				chance = 1;
+			}
+		}
+	}
+	
+	$("#strict").on('click', function(){
+		(strict === 0) ? strict = 1 : strict = 0;
+	})
+	
+	$(".slider").click(function() {
+		if (!$("input").is(':checked')) {
+			$(".countDisp").show();
+			$("#start").one("click", function(){
+				fillSequence();
+				playSequence();
+				$("#red").click(function(){sendColor(RED);});
+				$("#blue").click(function(){sendColor(BLUE)});
+				$("#green").click(function(){sendColor(GREEN)});
+				$("#yellow").click(function(){sendColor(YELLOW)});
+				$("#strict").disabled = true;
+				this.disabled = true;
+			})
+		} else if ($("input").is(':checked')) {
+			$(".cDisp").hide();
+			step = 0;
+			sequence = [];
+			turn = 0;
+			chance = 0;
+			$(".cDisp").html(turn);
+		}
+	})
+});
+</script>
+</body>
+</html>
